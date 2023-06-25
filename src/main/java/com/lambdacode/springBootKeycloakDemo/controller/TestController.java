@@ -50,8 +50,29 @@ public class TestController {
         return token.getEmail();
     }
 
+
+
     @GetMapping("/user2")
     public String testing2(){
         return "success for user 2";
     }
+
+
+    @GetMapping(value = "")
+    public void logUsername(Authentication authentication) {
+        Logger.getAnonymousLogger().info(authentication.getName());
+    }
+
+    @GetMapping(value = "/test-email")
+    public AccessToken loadUserDetail(KeycloakAuthenticationToken authentication) {
+        SimpleKeycloakAccount account = (SimpleKeycloakAccount) authentication.getDetails();
+        AccessToken token = account.getKeycloakSecurityContext().getToken();
+        //Username, other way
+        Logger.getAnonymousLogger().info(authentication.getPrincipal().toString());
+        //Email
+        Logger.getAnonymousLogger().info(token.getEmail());
+        return token;
+    }
+
+
 }
